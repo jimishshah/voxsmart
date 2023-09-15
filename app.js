@@ -13,10 +13,12 @@ function startServer() {
 
   setInterval(fetchRandomNumber, 1000);
 
-  server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+  return new Promise((resolve) => {
+    server.listen(port, hostname, () => {
+      console.log(`Server running at http://${hostname}:${port}/`);
+      resolve(server);
+    });
   });
-  return server;
 }
 
 function setRoutes(req, res) {
@@ -27,9 +29,10 @@ function setRoutes(req, res) {
       getAverageResponseRoute(res);
       break;
     default:
+      res.statusCode = 404;
       res.end(
         JSON.stringify({
-          status: "ok",
+          status: 404,
         })
       );
   }

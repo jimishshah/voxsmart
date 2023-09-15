@@ -5,10 +5,10 @@ jest.mock("./helpers");
 
 describe("server", () => {
   let server;
-  beforeAll(() => {
+  beforeAll(async () => {
     jest.useFakeTimers();
     fetchRandomNumber.mockImplementation(() => {});
-    server = startServer();
+    server = await startServer();
   });
 
   afterAll(async () => {
