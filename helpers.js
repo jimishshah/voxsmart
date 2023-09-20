@@ -9,22 +9,23 @@ function getAverage(randomNumbersStore) {
 }
 
 async function fetchRandomNumber() {
-  await fetch("https://csrng.net/csrng/csrng.php?min=0&max=100")
-    .then((result) => result.json())
-    .then(([value]) => {
-      if (value.random) randomNumbersStore.push(value.random);
-      else
-        console.error({
-          message: "Random number not returned",
-          value,
-        });
-    })
-    .catch((e) => {
+  try {
+    const result = await fetch(
+      "https://csrng.net/csrng/csrng.php?min=0&max=100"
+    );
+    const [value] = await result.json();
+    if (value.random) randomNumbersStore.push(value.random);
+    else
       console.error({
-        message: "csrng api call failed",
-        error: e,
+        message: "Random number not returned",
+        value,
       });
+  } catch (e) {
+    console.error({
+      message: "csrng api call failed",
+      error: e,
     });
+  }
 }
 
 module.exports = {
